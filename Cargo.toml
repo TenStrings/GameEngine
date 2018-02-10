@@ -5,3 +5,4 @@ authors = ["Enzo Cioppettini <tenstrings5050@gmail.com>"]
 
 [dependencies]
 num = "0.1.42"
+newtype_derive = "0.1.6"
