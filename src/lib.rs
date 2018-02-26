@@ -1,9 +1,13 @@
 pub mod math;
+pub mod engine;
 extern crate num;
+
 
 #[cfg(test)]
 mod tests {
     use super::math::*;
+    use super::engine::*;
+
     #[test]
     fn can_add_2d_vectors() {
         let a = Vec2(1., 1.);
@@ -31,5 +35,11 @@ mod tests {
     #[test]
     fn dot_product() {
         assert_eq!(Vec2(1.,2.).dot( Vec2(2.,3.) ), Scalar(2. + 2.*3.));
+    }
+
+    #[test]
+    fn new_world_is_empty() {
+        let world = create_world(640, 640);
+        assert!(world.particles.is_empty());
     }
 }
