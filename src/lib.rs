@@ -1,12 +1,17 @@
 pub mod math;
 pub mod engine;
+pub mod window;
+pub mod events;
 extern crate num;
-
+extern crate sdl2;
+extern crate gl;
 
 #[cfg(test)]
 mod tests {
     use super::math::*;
     use super::engine::*;
+    use super::window::*;
+    use super::events::*;
 
     #[test]
     fn can_add_2d_vectors() {
@@ -41,5 +46,18 @@ mod tests {
     fn new_world_is_empty() {
         let world = create_world(640, 640);
         assert!(world.particles.is_empty());
+    }
+
+    #[test]
+    fn can_process_events() {
+        let window = WindowBuilder::new()
+        .with_dimensions(300, 300)
+        .with_title("Test")
+        .build();
+
+        let mut events_pool = EventsPool::new(&window);
+        while let Some(_e) = events_pool.next() {
+
+        }
     }
 }
