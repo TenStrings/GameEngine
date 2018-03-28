@@ -6,6 +6,20 @@ extern crate num;
 extern crate sdl2;
 extern crate gl;
 
+pub struct Engine {
+    update: Vec<Box<Fn()>>,
+    draw: Vec<Box<Fn()>>,
+}
+
+impl Engine {
+    pub fn new() -> Engine {
+        Engine {
+            draw: Vec::new(),
+            update: Vec::new(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::math::*;

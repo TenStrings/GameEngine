@@ -3,6 +3,7 @@ use sdl2;
 pub struct Window {
     pub sdl: sdl2::Sdl,
     window: sdl2::video::Window,
+    gl: sdl2::video::GLContext,
 }
 
 pub struct WindowBuilder {
@@ -39,10 +40,12 @@ impl WindowBuilder {
             .opengl()
             .build()
             .unwrap();
+        let gl_context = window.gl_create_context().unwrap();
 
         Window {
             sdl: sdl,
             window: window,
+            gl: gl_context,
         }
     }
 }
