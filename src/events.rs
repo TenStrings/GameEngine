@@ -2,7 +2,6 @@ use sdl2;
 use window;
 use std::time::{Instant, Duration};
 
-
 pub enum Event {
     Update(u64),
     Draw,
