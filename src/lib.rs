@@ -1,3 +1,4 @@
+#![feature(duration_extras)]
 pub mod math;
 pub mod engine;
 pub mod window;
@@ -7,15 +8,49 @@ extern crate sdl2;
 extern crate gl;
 
 pub struct Engine {
-    update: Vec<Box<Fn()>>,
+    update: Vec<Box<FnMut(u64)>>,
     draw: Vec<Box<Fn()>>,
+    window: window::Window,
+    events_pool: events::EventsPool,
 }
 
 impl Engine {
     pub fn new() -> Engine {
+        let window = window::WindowBuilder::new()
+        .with_dimensions(300, 300)
+        .with_title("Test")
+        .build();
+
+        window::Window::clear(0.0, 0.0, 0.0, 1.0);
+
+        let events_pool = events::EventsPool::new(&window);
         Engine {
             draw: Vec::new(),
             update: Vec::new(),
+            window: window,
+            events_pool: events_pool,
+        }
+    }
+
+    pub fn register_to_update<CB>(&mut self, callback: CB)
+        where CB: 'static + FnMut(u64) {
+        self.update.push(Box::new(callback));
+    }
+
+    pub fn run_game(&mut self) {
+        while let Some(_e) = self.events_pool.next() {
+            match _e {
+                events::Event::Update(dt) =>
+                    for cb in self.update.iter_mut() {
+                        cb(dt);
+                    },
+                events::Event::Draw => {
+                    for cb in self.draw.iter() {
+                        cb();
+                    }
+                    self.window.swap();
+                },
+            }
         }
     }
 }
